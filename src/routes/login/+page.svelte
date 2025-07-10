@@ -2,6 +2,8 @@
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 
+    let {data} = $props();
+
     let username: string = $state("");
     let password: string = $state("");
     let fadeController: boolean = $state(false)
@@ -10,10 +12,6 @@
     onMount(() => {
         fadeController = true;
     })
-
-    function onclick() {
-        // Submit query to database using username and password here!
-    }
 </script>
 <style lang="postcss">
     @import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');

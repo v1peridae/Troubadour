@@ -1,5 +1,7 @@
-import * as db from "$lib/server/db.ts";
-export function load() {
+import { supabase } from "$lib/server/supabaseClient";
+
+export async function load() {
+    const data = await supabase.from("")
 
 }
 
