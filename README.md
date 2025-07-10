@@ -1,38 +1,9 @@
-# sv
+# Troubadour
+*Your music, annotated your way.*
+-------
+A **personal database for musical analysis.** Like *Genius*, but without having to deal with other people's shitty misinterpretations of songs you like. Troubadour gives you a centralized location for organizing all your awesome annotations.
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+I made this because I love a lot of different music and I find it really satisfying to do my own analyses of my favorite songs. There's so much incredible lyricism out there, and I hope this project gives everyone the opportunity to be their own lyrical scholar. 
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Prospective features
+If this gains some traction, maybe I'll add some more social features (sharing annotations, and such.). We could make it like a Letterboxd for lyrics. Anyone interested in collaborating on this project (and willing to deal with my terrifying SvelteKit ineptitude) is invited to contact me at **owner@jschere.com**.
