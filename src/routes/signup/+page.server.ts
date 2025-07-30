@@ -1,11 +1,11 @@
-import { supabase } from "$lib/server/supabaseClient";
+import { redirect } from "@sveltejs/kit";
 
-export async function load() {
-    // uhh i have no idea whether i need to use this
-}
+import type { PageServerLoad } from "./$types"
+import type { Actions } from "./$types";
 
-export const actions = {
-    default: async ({ cookies, request }) => {
+
+export const actions: Actions = {
+    default: async ({ request, locals: { supabase } }) => {
         const formData = await request.formData();
         const email = formData.get("email");
         const username = formData.get("username");
@@ -27,5 +27,6 @@ export const actions = {
             .eq('id', data.user ? data.user.id : "0");
 
         console.log(supabase.auth.getUser());
+        throw redirect(200, "/login")
     }
 }

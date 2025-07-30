@@ -30,7 +30,7 @@
 
 <div class="rounded-2xl mt-30 p-0 flex flex-col items-center text-center justify-center mx-auto w-md max-w-md">
     {#if fadeController}<h1 class="text-7xl text-center m-0 p-0 font-bold italic font-[Schibsted_Grotesk] opacity-85 " transition:fly={{ y: -100 }}>Create account</h1> {/if}
-    <form method="POST" class="flex flex-col items-center text-center justify-center">
+    <form method="POST" class="flex flex-col items-center text-center justify-center" use:enhance>
     <input type="text" class="bg-gray-300 border-2 inline-block rounded-md w-60 mt-6 items-center text-center justify-center" id="email" bind:value={email} name="email" placeholder="email">
     <input type="text" class="bg-gray-300 border-2 inline-block rounded-md w-60 mt-2 items-center text-center justify-center" id="username" bind:value={username} name="username" placeholder="username">
     <input type="password" class="bg-gray-300 border-2 inline-block rounded-md w-60 mt-2 items-center text-center justify-center" id="password" bind:value={password} name="password" placeholder="password">
