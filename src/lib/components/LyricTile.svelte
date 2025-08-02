@@ -4,11 +4,10 @@
     document.getElementById("")
 </script>
 
-<style>
+<style lang="postcss">
     #main {
         min-width: 20%;
         min-height: 20%;
-        
     }
 </style>
 

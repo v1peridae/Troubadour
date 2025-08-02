@@ -23,7 +23,7 @@ export const actions: Actions = {
         // Update actual users table
         const { error: updateError } = await supabase
             .from("users")
-            .update({ username: typeof username === "string" ? username : ""})
+            .insert({ username: typeof username === "string" ? username : ""})
             .eq('id', data.user ? data.user.id : "0");
 
         console.log(supabase.auth.getUser());

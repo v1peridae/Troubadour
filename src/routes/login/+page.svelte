@@ -3,7 +3,7 @@
 	import { fade } from "svelte/transition";
     import { enhance } from "$app/forms";
 
-    let {data} = $props();
+    let { data } = $props();
 
     let email: string = $state("");
     let password: string = $state("");
