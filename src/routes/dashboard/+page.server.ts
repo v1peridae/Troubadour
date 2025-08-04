@@ -1,7 +1,6 @@
 import { redirect } from "@sveltejs/kit"
 
-import type { PageServerLoad } from "./$types";
-import type { Actions } from "./$types"
+import type { PageServerLoad, Actions } from "./$types";
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase } }) => {
     // Get the supabase client from the server hook
@@ -26,4 +25,8 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
     if (error) throw error;
 
     return { lyrics: data, user, username };
+}
+
+export const actions: Actions = {
+    
 }
