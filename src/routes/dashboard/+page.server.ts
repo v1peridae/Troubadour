@@ -16,7 +16,14 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
     .select('*')
     .eq('user_id', user.id);
 
+    const username = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', user.id);
+
+    console.log(username, ' is logged in');
+
     if (error) throw error;
 
-    return { lyrics: data, user };
+    return { lyrics: data, user, username };
 }
