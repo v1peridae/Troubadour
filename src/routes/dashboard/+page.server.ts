@@ -1,4 +1,4 @@
-import { redirect } from "@sveltejs/kit"
+import { fail, redirect } from "@sveltejs/kit"
 
 import type { PageServerLoad, Actions } from "./$types";
 
@@ -28,5 +28,12 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 }
 
 export const actions: Actions = {
-    
-}
+    signout: async ({request, locals: { supabase }}) => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error(error);
+            return fail(401, {error: error.message});
+        }
+        throw redirect(303, "/login");
+    }
+} satisfies Actions;

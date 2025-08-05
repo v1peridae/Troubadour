@@ -20,10 +20,14 @@
 	})
 </script>
 
+<style lang="postcss">
+	@reference "tailwindcss";
+</style>
+
 <svelte:head>
 	<title>Troubadour</title>
 </svelte:head>
 
-<div class="container" style="padding: 50px 0 100px 0">
+<div class="container" style="padding: 0 0 100px 0">
 	<slot />
 </div>
