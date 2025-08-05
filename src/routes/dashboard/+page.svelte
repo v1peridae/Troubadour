@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { enhance } from '$app/forms';
+    import { goto } from "$app/navigation";
     import { blur } from "svelte/transition";
     import LyricTile from "$lib/components/LyricTile.svelte";
 	import Button from "$lib/components/Button.svelte";
@@ -23,9 +24,6 @@
     $inspect(data);
     $inspect(username);
 </script>
-<style lang="postcss">
-    @reference "tailwindcss";
-</style>
 
 <header class="fixed top-2 left-0 w-full z-10">
     <h3 id="title" class="text-3xl self-center text-gray-800 font-bold text-center mt-2 text-shadow-cyan-900/50" transition:blur>Troubadour</h3>
@@ -50,6 +48,9 @@
     {/each}
 </div>
 
-<Button text="Create" color="#606060" callBackFunction={() => {
-    console.log("This button works when pressed.")
-}}/>
+<div id="button-container" class="w-fit h-fit relative top-4 mx-auto">
+    <Button text="Create" color="#606060" callBackFunction={() => {
+        console.log("This button works when pressed.");
+        goto('create');
+    }}/>
+</div>

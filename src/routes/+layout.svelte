@@ -21,6 +21,8 @@
 </script>
 
 <style lang="postcss">
+	@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');  
 	@reference "tailwindcss";
 </style>
 
@@ -28,6 +30,6 @@
 	<title>Troubadour</title>
 </svelte:head>
 
-<div class="container" style="padding: 0 0 100px 0">
+<div class="container" style="padding: 0">
 	<slot />
 </div>
