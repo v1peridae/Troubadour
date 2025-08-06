@@ -22,21 +22,23 @@ export const actions: Actions = {
 
         if (error) {
             console.error(error.message);
-            throw fail(400, {error: error.message});
+            return fail(400, {error: error.message});
         }
 
         // Update actual users table
         const { error: updateError } = await supabase
             .from("users")
-            .insert({ username: typeof username === "string" ? username : ""})
-            .eq('id', data.user ? data.user.id : "0");
+            .insert({ 
+                id: data.user?.id,
+                username: typeof username === "string" ? username : ""
+            });
 
         if (updateError) {
             console.error(updateError.message);
-            throw fail(400, {error: updateError.message});
+            return fail(400, {error: updateError.message});
         }
 
-        console.log(supabase.auth.getUser());
+        //console.log(supabase.auth.getUser());
         throw redirect(303, "/login")
     }
 }

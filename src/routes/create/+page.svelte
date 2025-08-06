@@ -41,7 +41,7 @@
 </script>
 
 <style lang="postcss">
-    #main-container {
+    #main-container, #body {
         scrollbar-width: none;
     }
 </style>
