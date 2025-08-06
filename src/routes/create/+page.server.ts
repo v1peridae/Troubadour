@@ -28,5 +28,16 @@ export const actions: Actions = {
             return fail(401, {error: error.message});
         }
         throw redirect(303, "/login");
+    },
+    createLyric: async ({request, locals: { supabase }}) => {
+        const formData = await request.formData();
+        const title = formData.get("title");
+        const artist = formData.get("artist");
+        const lyricBody = formData.get("lyrics");
+        const album_name = formData.get("album");
+        const album_image = formData.get("album_image");
+        
+        console.log(`Form data:\nTitle: ${title}\nArtist: ${artist}\nLyrics: ${lyricBody}\nAlbum: ${album_name}`);
+        console.log("Album image data:\n", album_image);
     }
 } satisfies Actions;
