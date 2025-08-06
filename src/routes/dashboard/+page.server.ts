@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
     .select('*')
     .eq('id', user.id);
 
-    console.log(username, ' is logged in');
+    //console.log(username, ' is logged in');
 
     if (error) throw error;
 

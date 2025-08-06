@@ -47,6 +47,7 @@
 </style>
 
 <header class="fixed top-2 left-0 w-full z-10">
+    {#if mounted}<a href="/dashboard"><h4 id="return" class="text-xl fixed left-1/10 top-1/26 italic text-cyan-950" transition:blur={{duration: 5000}}>back to dashboard</h4></a>{/if}
     <h3 id="title" class="text-3xl self-center text-gray-600 text-shadow-cyan-900/50 font-bold text-center mt-2 font-[Crimson_Pro]" transition:blur>Troubadour</h3>
     <h4 id="username" class="text-2xl fixed right-1/7 top-5.5 text-cyan-950 font-[Schibsted_Grotesk] font-extrabold italic text-shadow-white text-shadow-lg/70 text-shadow">{username}</h4>
     <form action="?/signout" method="POST" use:enhance>
