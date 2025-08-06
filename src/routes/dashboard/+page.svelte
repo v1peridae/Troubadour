@@ -25,6 +25,12 @@
     $inspect(username);
 </script>
 
+<style lang="postcss">
+    #main-container {
+        scrollbar-width: none;
+    }
+</style>
+
 <header class="fixed top-2 left-0 w-full z-10">
     <h3 id="title" class="text-3xl self-center text-gray-600 text-shadow-cyan-900/50 font-bold text-center mt-2 font-[Crimson_Pro]" transition:blur>Troubadour</h3>
     <h4 id="username" class="text-2xl fixed right-1/6 top-5.5 text-cyan-950 font-[Schibsted_Grotesk] font-extrabold italic text-shadow-white text-shadow-lg/70 text-shadow">{username}</h4>
@@ -42,7 +48,7 @@
 {/if}
 
 -->
-<div id="main-container" class="border-black border-4 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto flex flex-row flex-wrap gap-4 bg-rose-50">
+<div id="main-container" class="border-black border-4 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto flex flex-row flex-wrap gap-4 bg-rose-50 overflow-y-scroll">
     {#each lyrics as song}
         <LyricTile title={song.title} artist={song.artist} album_url={song.album_url ? song.album_url : "/missing_album_src.png"} album_name={song.album_name} />
     {/each}

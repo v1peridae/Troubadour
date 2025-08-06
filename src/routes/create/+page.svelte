@@ -5,9 +5,10 @@
 
     let data = $props();
     let username = $derived(data.data.username.data[0].username);
-    let title = $state("The song's title here");
-    let artist = $state("The artist that made the song!");
-    let album = $state("The album the song's from (if you know)");
+    let title = $state("");
+    let artist = $state("");
+    let album = $state("");
+    let body = $state("");
 
     let fadeController: boolean = $state(false);
     onMount(() => {
@@ -16,14 +17,16 @@
 </script>
 
 <style lang="postcss">
-    
+    #main-container {
+        scrollbar-width: none;
+    }
 </style>
 
 <header class="fixed top-2 left-0 w-full z-10">
-    <h3 id="title" class="text-3xl self-center text-gray-800 font-bold text-center mt-2 text-shadow-cyan-900/50 font-[Crimson_Pro]" transition:blur>Troubadour</h3>
-    <h4 id="username" class="text-2xl fixed right-1/7 top-5.5 text-cyan-950 ">{username}</h4>
+    <h3 id="title" class="text-3xl self-center text-gray-600 text-shadow-cyan-900/50 font-bold text-center mt-2 font-[Crimson_Pro]" transition:blur>Troubadour</h3>
+    <h4 id="username" class="text-2xl fixed right-1/7 top-5.5 text-cyan-950 font-[Schibste_Grotesk] font-extrabold italic text-shadow-white text-shadow-lg/70 text-shadow">{username}</h4>
     <form action="?/signout" method="POST" use:enhance>
-        <input id="signout" type="submit" class="fixed text-xl right-5 top-3 text-cyan-800 border-2 border-rose-700 rounded-2xl p-3" value="Sign-out">
+        <input id="signout" type="submit" class="fixed text-xl right-5 top-3 text-cyan-800 border-2 border-rose-700 rounded-2xl p-3 italic font-medium bg-white" value="Sign-out">
     </form>
 </header>
 
@@ -36,10 +39,17 @@
 {/if}
 
 -->
-<div id="main-container" class="border-black border-2 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto gap-4 justify-center items-center bg-cyan-50">
+<div id="main-container" class="border-black border-2 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto gap-4 justify-center items-center bg-cyan-50 overflow-y-scroll">
     {#if fadeController} <h1 class="m-auto relative top-3 text-center text-2xl font-bold font-[Schibsted_Grotesk] text-shadow-2xs" transition:fade={{delay: 500, duration: 800}}>Let's get to work:</h1> {/if}
     <form action="?/createLyric" method="POST" class="flex flex-col items-center text-center justify-center relative top-6" use:enhance>
-        <input type="text" bind:value={title} id="title" class="border-2 bg-gray-50 inline-block rounded-md w-10/12 text-shadow-2xs">
+        <h4 class="italic text-lg">Song title?</h4>
+        <input type="text" name="title" bind:value={title} placeholder="Helpless Child" id="title" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        <h4 class="italic text-lg mt-1">Okay, who's it by?</h4>
+        <input type="text" name="artist" bind:value={artist} placeholder="Swans" id="artist" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        <h4 class="italic text-lg mt-1">Awesome, what album is it on?</h4>
+        <input type="text" name="album" bind:value={album} placeholder="The Great Annihilator" id="album" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        <h4 class="italic text-lg mt-1">Cool, now paste the lyrics here (hint: you're one Google search away):</h4>
+        <textarea bind:value={body} name="lyrics" placeholder="Now, you be the mother, and..." id="body" class="mt-1 border-1 bg-gray-100 inline-block rounded-md w-9/12 text-shadow-2xs h-40 mb-4" required></textarea>
+
     </form>
 </div>
-
