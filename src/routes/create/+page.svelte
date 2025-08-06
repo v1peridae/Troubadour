@@ -65,7 +65,7 @@
 -->
 <div id="main-container" class="border-black border-2 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto gap-4 justify-center items-center bg-cyan-50 overflow-y-scroll">
     {#if mounted} <h1 class="m-auto relative top-3 text-center text-2xl font-bold font-[Schibsted_Grotesk] text-shadow-2xs" transition:fade={{delay: 500, duration: 800}}>Let's get to work:</h1>
-    <form action="?/createLyric" method="POST" class="flex flex-col items-center text-center justify-center relative top-6" enctype="multipart/form-data" autocomplete="off">
+    <form action="?/createLyric" method="POST" class="flex flex-col items-center text-center justify-center relative top-6" enctype="multipart/form-data" autocomplete="off" use:enhance>
         <h4 class="italic text-lg" transition:fly={{delay: 1000, x: -10}}>Song title?</h4>
         <input type="text" name="title" bind:value={title} placeholder="Helpless Child" id="title" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
         
