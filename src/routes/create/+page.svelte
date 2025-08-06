@@ -12,32 +12,26 @@
 
     // File upload preview, courtesy of https://svelte.dev/playground/b5333059a2f548809a3ac3f60a17a8a6?version=5.37.3#H4sIAAAAAAAACn1UXWvbMBT9K3cqgxTiONkYDMUJlDWDQQejW_dS9UGxrmNtimSk66Qh-L8P-SPJ2rEno6N7z7kfRz4yK7fIOPuylRuEbx53GvfgLHzWBuGhMk4qNmaFNhgYfzwyOlQxPgJsPGTfVNUk7NBQxNYy4L_w3FlCS4Fxlr1JEvheYa6lASql_R2AHNzmTiEUzgOVOgDV5LyWhkNJVAWepgdXUz1ZY_pzZeyPjyu3Wn2FJFkKK2wWcq8rWgoLYJBA26qm-XCK4lJb9CdEx45Pp8rIHEtnVBshKGKhdPtuLgsopAkxOsYXtc1JOwvOfiql3eDoGo7xAqJMIIjDgUVXwaQd3eP0qaUV1MXpAkbxok1sYbpUI18PYmdWj1KhhwVY3LfruW-B0fV8iOsiJlKp1Q4t3elAaNGPBItrFGx8Lv1ccltO1J0EpBsir9c14Uiw4POY0pN6DLWhs1bzSjZ-bsKtJPlwf9d1N_RMw9cj1d72mQ108Os5QwxohM3S01KFzcrZ8n82zdJythQ2a8cemdfaKh6dtDi2WBNBZ3neLm1xHNbXRLXo64VofS2YsGlkUnoHFyQnDzWxHjpe6eLskabrJdPbzWVOO9kGgs8XggkG0tBCsL4BwSDtqDiacKIIlbSXHBfebP6eQJbG2I4i1UU7MaV3_Xugg8H2LvbRb3uvFZUc3k-n1XO_hq22SYl6UxKH2QW-dl6h5_CueobgjFZwpZQakqTfaJuQqzjMPpxylA6VkQcOhcEBk0ZvbKIJt4FDjpb6Rwjwqw6ki0PS_xle3BbOUrLvC1s7M0jnzjjP4SrP83nvk-jgzYsWZ9Pp2_nZR_0w2JgRPhPj8Yk1T2NGUpu9torx1nrNH6zoc38SBQAA
     let input: HTMLInputElement;
-    let container: HTMLElement;
     let image: HTMLElement;
-    let placeholder: HTMLElement;
     let showImage: boolean = false;
+    let fileTooBig: boolean = false;
 
-    function onChange() {
+    function onchange() {
         if (input.files) {
             const file: File = input.files[0];
             if (file) {
                 showImage = true;
                 
-                const reader = new FileReader();
+                const reader: FileReader = new FileReader();
                 reader.addEventListener('load', () => {
-                    reader.result ? image.setAttribute('src', reader.result) : ;
-                })
+                    reader.result ? image.setAttribute('src', (typeof reader.result === 'string' ? reader.result : "")) : image.setAttribute('src', '/missing_album_src.png');
+                });
+                reader.readAsDataURL(file);
+
+                return;
             }
         }
-
-        if (file) {
-            showImage = true;
-
-            const reader = new FileReader();
-            reader.addEventListener('load', () => {
-                image.setAttribute('src', reader.result);
-            })
-        }
+        showImage = false;
     }
 
     let fadeController: boolean = $state(false);
@@ -74,19 +68,26 @@
     <form action="?/createLyric" method="POST" class="flex flex-col items-center text-center justify-center relative top-6" use:enhance>
         <h4 class="italic text-lg">Song title?</h4>
         <input type="text" name="title" bind:value={title} placeholder="Helpless Child" id="title" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        
         <h4 class="italic text-lg mt-1">Okay, who's it by?</h4>
         <input type="text" name="artist" bind:value={artist} placeholder="Swans" id="artist" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        
         <h4 class="italic text-lg mt-1">Awesome, what album is it on?</h4>
         <input type="text" name="album" bind:value={album} placeholder="The Great Annihilator" id="album" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        
         <h4 class="italic text-lg mt-1">Cool, now paste the lyrics here (hint: you're one Google search away):</h4>
         <textarea bind:value={body} name="lyrics" placeholder="Now, you be the mother, and..." id="body" class="mt-1 border-1 bg-gray-100 inline-block rounded-md w-9/12 text-shadow-2xs h-40 mb-4" required></textarea>
+        
         <h4 class="italic text-lg mt-1">Awesome! Now, upload the album art if you have it, and hit submit.</h4>
+        <img bind:this={image} src="/missing_album_src.png" alt="Album preview" />
         <input 
         type="file" 
-        name="album_image" 
+        name="album_image"
+        accept="image/png, image/jpeg"
         id="album_image"
-        on:change={onChange}
+        {onchange}
         bind:this={input}
         >
+        {#if fileTooBig} {/if}
     </form>
 </div>
