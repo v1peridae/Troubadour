@@ -6,7 +6,6 @@
 
     let props = $props();
     let { lyrics, annotations, user, username } = props.data;
-    console.log(lyrics, annotations, user, username);
     let mounted: boolean = $state(false);
     let editing: boolean = $state(false);
 
@@ -22,6 +21,47 @@
 
     type Annotation = {id: number, song_id: string, body: string, start_index: number, end_index: number, user_id: string}
     
+    function getOriginalIndex(container: HTMLElement, node: Node, offset: number): number {
+        let index = 0;
+        let found = false;
+        function walk(current: Node): boolean {
+            if (current === node) {
+                index += offset;
+                found = true;
+                return true;
+            }
+            if (current.nodeType === Node.TEXT_NODE) {
+                if (!found) index += current.textContent?.length ?? 0;
+            } else {
+                for (let child of current.childNodes) {
+                    if (walk(child)) return true;
+                }
+            }
+            return false;
+        }
+        walk(container);
+        return index;
+    }
+
+    function getSelectionIndices(container: HTMLElement): [number, number] {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return [0, 0];
+        const range = selection.getRangeAt(0);
+
+        let preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(container);
+
+        // Set end to anchor
+        preCaretRange.setEnd(range.startContainer, range.startOffset);
+        const start = preCaretRange.toString().length;
+
+        // Set end to focus
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        const end = preCaretRange.toString().length;
+
+        return [Math.min(start, end), Math.max(start, end)];
+    }
+
     onMount(() => {
         // Place all the annotations where they need to be.
         
@@ -38,7 +78,7 @@
                 result += lyrics.slice(lastIndex, ann.start_index);
 
                 // Add annotated span
-                const injectionString = `<span class="bg-blue-100 cursor-pointer" data-ann="${ann.id}">${lyrics.slice(ann.start_index, ann.end_index)}</span>`
+                const injectionString = `<span class="bg-blue-100 cursor-pointer" data-ann="${ann.id}" data-start-index="${ann.start_index}" data-end-index="${ann.end_index}">${lyrics.slice(ann.start_index, ann.end_index)}</span>`
                 result += injectionString;
 
                 lastIndex = ann.end_index;
@@ -47,30 +87,32 @@
             // Add remaining text
             result += lyrics.slice(lastIndex);
 
+            console.log(result);
             return result;
         }
 
         lyricBody = renderAnnotatedLyrics(lyrics[0].body, annotations);
 
-        document.addEventListener("selectionchange", (e) => {
-            if (window.getSelection()) {
-                console.log(window.getSelection()?.anchorNode)
-                if (window.getSelection()?.anchorNode?.parentNode?.parentNode == document.getElementById('lyric-container')) {
-                    highlightedContent = window.getSelection()?.toString() ?? "";
-                    if (window.getSelection()?.getRangeAt(0).startOffset) { 
-                        const selection = window.getSelection();
-                        if (selection && selection.rangeCount > 0) {
-                            highlightStartIndex = selection.getRangeAt(0).startOffset;
-                            highlightEndIndex = (highlightStartIndex ?? 0) + (selection.toString()?.length ?? 0);
-                        }
-                     }
-                    editing = true;
-                }
+        document.addEventListener("selectionchange", () => {
+            const selection = window.getSelection();
+            const container = document.getElementById('lyric-container');
+            if (
+                selection &&
+                selection.anchorNode &&
+                selection.focusNode &&
+                container &&
+                container.contains(selection.anchorNode) &&
+                container.contains(selection.focusNode)
+            ) {
+                highlightedContent = selection.toString() ?? "";
+                const [start, end] = getSelectionIndices(container);
+                highlightStartIndex = start;
+                highlightEndIndex = end;
+                editing = highlightedContent.length > 0;
             } else {
-                editing = false;
                 highlightedContent = "";
             }
-        })
+        });
         mounted = true;
     })
 
