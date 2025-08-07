@@ -50,7 +50,7 @@
 -->
 <div id="main-container" class="border-black border-4 rounded-xl h-110 w-full max-w-screen-lg mx-auto self-center mt-20 ml-auto mr-auto flex flex-row flex-wrap gap-4 bg-rose-50 overflow-y-scroll">
     {#each lyrics as song}
-        <LyricTile title={song.title} artist={song.artist} album_url={song.album_url ? song.album_url : "/missing_album_src.png"} album_name={song.album_name} />
+        <LyricTile title={song.title} artist={song.artist} album_url={song.album_url ? song.album_url : "/missing_album_src.png"} album_name={song.album_name} id={song.id}/>
     {/each}
 </div>
 
