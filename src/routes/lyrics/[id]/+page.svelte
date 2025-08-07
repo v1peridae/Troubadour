@@ -10,7 +10,7 @@
     let mounted: boolean = $state(false);
     let editing: boolean = $state(false);
 
-    let lyricBody = $state(lyrics[0].body);
+    let lyricBody: string = $state(lyrics[0].body);
 
     let highlightedContent: string = $state("");
     let highlightStartIndex: number | undefined = $state(0);
@@ -22,14 +22,31 @@
     onMount(() => {
         // Place all the annotations where they need to be.
         type Annotation = {id: number, song_id: string, body: string, start_index: number, end_index: number, user_id: string}
-        let sortedAnnotations: Annotation[] = annotations;
-        sortedAnnotations.sort((a, b) => {
-            return a.start_index - b.start_index
-        })
 
-        for (let annotationIndex = sortedAnnotations.length - 1; annotationIndex--; annotationIndex > 0) {
-            
+        function renderAnnotatedLyrics(lyrics: string, annotations: Annotation[]) {
+            let result = "";
+            let lastIndex = 0;
+
+            // Sort annotations by start_index
+            const sorted = [...annotations].sort((a, b) => a.start_index - b.start_index);
+
+            sorted.forEach((ann, i) => {
+                // Add text before annotation
+                result += lyrics.slice(lastIndex, ann.start_index);
+
+                // Add annotated span
+                result += `<span class="bg-blue-100 cursor-pointer" data-ann="${ann.id}">${lyrics.slice(ann.start_index, ann.end_index)}</span>`;
+
+                lastIndex = ann.end_index;
+            });
+
+            // Add remaining text
+            result += lyrics.slice(lastIndex);
+
+            return result;
         }
+
+        lyricBody = renderAnnotatedLyrics(lyricBody, annotations);
         document.addEventListener("selectionchange", (e) => {
             if (window.getSelection()) {
                 console.log(window.getSelection()?.anchorNode)
@@ -52,6 +69,9 @@
     #lyric-container, #annotation-container {
         scrollbar-width: none;
     }
+    span {
+        background-color: lightblue;
+    }
 </style>
 
 <header class="fixed top-2 left-0 w-full z-10">
@@ -67,7 +87,7 @@
     // if mouse-click without selection, switch to review mode
     if (window.getSelection()?.toString().length == 0) { editing = false; }
 }}>
-    <pre class="font-[Crimson_Pro] mt-3 text-lg/10 text-center">{@html lyricBody}</pre>
+    <pre class="font-[Crimson_Pro] mt-3 text-lg/10 text-center">{@html }</pre> <!-- WARNING: This has the potential for XSS attacks. This needs to be addressed. But right now, I can't think of a way this can be exploited against another person - you can only access your own annotations, because of RLS.-->
 </div>
 
 <div id="annotation-container" class="fixed right-2 w-11/24 h-120 border-black/70 border-2 top-20 bg-amber-50 overflow-y-scroll text-2xl">
