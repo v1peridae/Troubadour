@@ -74,7 +74,7 @@
         <input type="text" name="artist" bind:value={artist} placeholder="Swans" id="artist" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
         
         <h4 class="italic text-lg mt-1" transition:fly={{delay: 2000, x: -10}}>Awesome, what album is it on?</h4>
-        <input type="text" name="album" bind:value={album} placeholder="The Great Annihilator" id="album" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
+        <input type="text" name="album" bind:value={album} placeholder="Soundtracks for the Blind" id="album" class="mt-1 items-center text-center border-2 bg-gray-50 inline-block rounded-md w-9/12 text-shadow-2xs" required>
         
         <h4 class="italic text-lg mt-1" transition:fly={{delay: 2500, x: -10}}>Cool, now paste the lyrics here (hint: you're one Google search away):</h4>
         <textarea bind:value={body} name="lyrics" placeholder="Now, you be the mother, and..." id="body" class="mt-1 border-1 bg-gray-100 inline-block rounded-md w-9/12 text-shadow-2xs h-40 mb-4" required></textarea>
