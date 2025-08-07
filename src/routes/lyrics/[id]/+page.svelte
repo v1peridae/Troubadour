@@ -9,7 +9,7 @@
     let mounted: boolean = $state(false);
     let editing: boolean = $state(false);
 
-    let lyricBody: string = $state(lyrics[0].body);
+    let lyricBody: string = $state(lyrics[0].body.replace(/\r\n/g, '\n'));
 
     let highlightedContent: string = $state("");
     let highlightStartIndex: number | undefined = $state(0);
@@ -91,7 +91,7 @@
             return result;
         }
 
-        lyricBody = renderAnnotatedLyrics(lyrics[0].body, annotations);
+        lyricBody = renderAnnotatedLyrics(lyrics[0].body.replace(/\r\n/g, '\n'), annotations);
 
         document.addEventListener("selectionchange", () => {
             const selection = window.getSelection();
@@ -162,4 +162,4 @@
     <h4 class="absolute left-1/2 {editing ? "text-amber-500" : "text-blue-500"} -translate-x-1/2 bottom-0 font-light font-[Crimson_Pro]">{editing ? 'Edit Mode' : 'Review Mode'}</h4>
 </div>
 
-<p class="fixed bottom-0.5 left-1/2 -translate-x-1/2">Selected: {highlightedContent}</p>
+<!--<p class="fixed bottom-0.5 left-1/2 -translate-x-1/2">Selected: {highlightedContent}</p> -->
