@@ -14,15 +14,17 @@
 
     let highlightedContent: string = $state("");
     let highlightStartIndex: number | undefined = $state(0);
+    let highlightEndIndex: number | undefined = $state(0);
 
     let activeAnnotation = $state("");
 
     let source = $state("Hi! Start highlighting to make annotations, or *click* an existing one. P.S: Annotations support ***Markdown!***");
 
+    type Annotation = {id: number, song_id: string, body: string, start_index: number, end_index: number, user_id: string}
+    
     onMount(() => {
         // Place all the annotations where they need to be.
-        type Annotation = {id: number, song_id: string, body: string, start_index: number, end_index: number, user_id: string}
-
+        
         function renderAnnotatedLyrics(lyrics: string, annotations: Annotation[]) {
             let result = "";
             let lastIndex = 0;
@@ -30,12 +32,14 @@
             // Sort annotations by start_index
             const sorted = [...annotations].sort((a, b) => a.start_index - b.start_index);
 
-            sorted.forEach((ann, i) => {
+
+            sorted.forEach((ann) => {
                 // Add text before annotation
                 result += lyrics.slice(lastIndex, ann.start_index);
 
                 // Add annotated span
-                result += `<span class="bg-blue-100 cursor-pointer" data-ann="${ann.id}">${lyrics.slice(ann.start_index, ann.end_index)}</span>`;
+                const injectionString = `<span class="bg-blue-100 cursor-pointer" data-ann="${ann.id}">${lyrics.slice(ann.start_index, ann.end_index)}</span>`
+                result += injectionString;
 
                 lastIndex = ann.end_index;
             });
@@ -46,13 +50,20 @@
             return result;
         }
 
-        lyricBody = renderAnnotatedLyrics(lyricBody, annotations);
+        lyricBody = renderAnnotatedLyrics(lyrics[0].body, annotations);
+
         document.addEventListener("selectionchange", (e) => {
             if (window.getSelection()) {
                 console.log(window.getSelection()?.anchorNode)
                 if (window.getSelection()?.anchorNode?.parentNode?.parentNode == document.getElementById('lyric-container')) {
                     highlightedContent = window.getSelection()?.toString() ?? "";
-                    if (window.getSelection()?.getRangeAt(0).startOffset) { highlightStartIndex = window.getSelection()?.getRangeAt(0)?.startOffset; }
+                    if (window.getSelection()?.getRangeAt(0).startOffset) { 
+                        const selection = window.getSelection();
+                        if (selection && selection.rangeCount > 0) {
+                            highlightStartIndex = selection.getRangeAt(0).startOffset;
+                            highlightEndIndex = (highlightStartIndex ?? 0) + (selection.toString()?.length ?? 0);
+                        }
+                     }
                     editing = true;
                 }
             } else {
@@ -62,15 +73,19 @@
         })
         mounted = true;
     })
+
+    function handleAnnotationClick(event: MouseEvent) {
+        const target = event?.target as HTMLElement;
+        if (target.tagName === "SPAN" && target.dataset.ann) {
+            source = annotations.find( ( a: Annotation ) => a.id == Number(target.dataset.ann)).body ?? "";
+        }
+    }
     $inspect(lyrics, annotations, user, username);
 </script>
 
 <style lang="postcss">
     #lyric-container, #annotation-container {
         scrollbar-width: none;
-    }
-    span {
-        background-color: lightblue;
     }
 </style>
 
@@ -87,7 +102,7 @@
     // if mouse-click without selection, switch to review mode
     if (window.getSelection()?.toString().length == 0) { editing = false; }
 }}>
-    <pre class="font-[Crimson_Pro] mt-3 text-lg/10 text-center">{@html }</pre> <!-- WARNING: This has the potential for XSS attacks. This needs to be addressed. But right now, I can't think of a way this can be exploited against another person - you can only access your own annotations, because of RLS.-->
+    <pre class="font-[Crimson_Pro] mt-3 text-lg/10 text-center" onclick={handleAnnotationClick}>{@html lyricBody}</pre> <!-- WARNING: This has the potential for XSS attacks. This needs to be addressed. But right now, I can't think of a way this can be exploited against another person - you can only access your own annotations, because of RLS.-->
 </div>
 
 <div id="annotation-container" class="fixed right-2 w-11/24 h-120 border-black/70 border-2 top-20 bg-amber-50 overflow-y-scroll text-2xl">
@@ -95,7 +110,11 @@
     <Markdown {source} />
     {:else}
     <form action="?/annotate" method="POST">
-    <textarea bind:value={activeAnnotation} name="annotation" placeholder="I really like how Michael Gira..." id="annotation-body" required class="w-full" rows=14 ></textarea>
+    <textarea bind:value={activeAnnotation} name="annotation" placeholder="I really like how Michael Gira..." id="annotation-body" required class="w-full" rows=13 ></textarea>
+    <input type="hidden" bind:value={highlightStartIndex} name="start_index">
+    <input type="hidden" bind:value={highlightEndIndex} name="end_index">
+    <input type="hidden" value={lyrics[0].id} name="song_id">
+    <input type="submit" class="bg-green-300 border-2 border-green-400 inline-block rounded-full w-20 font-[Schibsted_Grotesk] absolute bottom-10 left-1/2 -translate-x-1/2 italic font-light" value="Save">
     </form>
     {/if}
     <h4 class="absolute left-1/2 {editing ? "text-amber-500" : "text-blue-500"} -translate-x-1/2 bottom-0 font-light font-[Crimson_Pro]">{editing ? 'Edit Mode' : 'Review Mode'}</h4>
