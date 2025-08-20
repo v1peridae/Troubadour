@@ -27,7 +27,7 @@
 	@reference "tailwindcss";
 
 	:global(html) {
-		background-color: #cfcece;
+		background-color: #BDBDBD;
 	}
 </style>
 
@@ -35,6 +35,4 @@
 	<title>Troubadour</title>
 </svelte:head>
 
-<div class="container" style="padding: 0">
-	<slot />
-</div>
+<slot />
