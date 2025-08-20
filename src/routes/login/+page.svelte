@@ -34,7 +34,7 @@
     <div class="w-1/3 flex flex-col justify-center items-center p-8 relative">
         {#if fadeController}
             <div class="text-center" transition:fade>
-                <h1 class="text-6xl text-[#023E8A] font-avara-bold-italic mb-12">login</h1>
+                <h1 class="text-6xl text-[#0277B6] font-avara-bold-italic mb-12">login</h1>
                 
                 <form method="POST" class="flex flex-col items-center space-y-8" use:enhance>
                     <div class="w-full max-w-xs">
