@@ -11,7 +11,8 @@
     let password: string = $state("");
     let fadeController: boolean = $state(false)
     $inspect(email).with(console.trace);
-    $inspect(password).with(console.trace)
+    $inspect(password).with(console.trace);
+    $inspect(data).with(console.trace);
     onMount(() => {
         fadeController = true;
     })
@@ -29,8 +30,7 @@
     }
 </style>
 
-<div class="min-h-screen flex bg-gray-300 border border-black">
-    <!-- Left Column - Login Section -->
+<div class="min-h-screen flex bg-[#BDBDBD] ">
     <div class="w-1/3 flex flex-col justify-center items-center p-8 relative">
         {#if fadeController}
             <div class="text-center" transition:fade>
@@ -48,6 +48,7 @@
                             placeholder="email"
                         >
                         <div class="h-px bg-[#023E8A] w-full"></div>
+
                     </div>
                     
                     <div class="w-full max-w-xs">
@@ -61,8 +62,16 @@
                             placeholder="password"
                         >
                         <div class="h-px bg-[#023E8A] w-full"></div>
+
                     </div>
+
                     
+
+                    {#if (data as any)?.error}
+                        <p class="text-[#023E8A] text-sm font-manifont-book mt-2">{(data as any).error}</p>
+                    {/if}
+
+
                     <button type="submit" class="text-[#023E8A] font-manifont-book text-xl mt-8">
                         >>>
                     </button>

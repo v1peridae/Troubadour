@@ -1,6 +1,5 @@
 <script lang="ts">
-	    import { onMount } from "svelte";
-    import { fade } from "svelte/transition";
+	import { onMount } from "svelte";
     import "../avara/font.css";
     import "../manifont/font.css";
 
@@ -21,7 +20,7 @@
     }
 </style>
 
-<div class="min-h-screen flex flex-col items-center justify-center bg-gray-300">
+<div class="min-h-screen flex flex-col items-center justify-center bg-[#BDBDBD]">
     <h1 class="text-8xl text-[#023E8A] font-avara-bold-italic mb-4">troubadour</h1>
     {#if fadeController}
         <h4 class="text-2xl text-[#0277B6] font-avara-bold mb-8">
