@@ -3,7 +3,6 @@
     let { username } = $props();
     import "../../avara/font.css";
     import "../../manifont/font.css";
-    import Button from "$lib/components/Button.svelte";
 </script>
 
 <header class="fixed top-0 left-0 right-0 w-full z-10 bg-[#BDBDBD] px-4 py-4 mt-2">
